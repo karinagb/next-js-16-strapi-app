@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { HeroSectionData } from '@/components/ui/hero-section';
+import { StrapiResponse, StrapiHeroSection } from '@/lib/interfaces';
 
 const BASE_URL = process.env.STRAPI_BASE_URL ?? 'http://localhost:1337';
 
@@ -18,18 +18,6 @@ export function getStrapiImageUrl(url: string | undefined): string | undefined {
   return `${strapiBaseUrl}${url}`;
 }
 
-export type StrapiResponse<T> = {
-  data: {
-    id: number;
-    title: string;
-    description: string;
-    sections?: T[];
-  };
-};
-
-export type StrapiHeroSection = HeroSectionData & {
-  __component: 'layout.hero-section';
-};
 
 
 const QUERY_HOME_PAGE = {
@@ -52,6 +40,7 @@ const QUERY_HOME_PAGE = {
 };
 
 export async function fetchHomePageData() {
+    'use cache'
     const query = qs.stringify(QUERY_HOME_PAGE)
     const response = await fetchStrapiData<StrapiHeroSection>(`/api/home-page?${query}`); 
     return response;
