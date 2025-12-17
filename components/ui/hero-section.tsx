@@ -16,7 +16,7 @@ export type StrapiImage = {
 export type HeroSectionData = {
   heading: string;
   subHeading?: string;
-  species?: string;
+  imageDescription?: string;
   link?: {
     label?: string;
     href: string;
@@ -30,7 +30,7 @@ type HeroSectionProps = {
 };
 
 export function HeroSection({ data }: HeroSectionProps) {
-  const { heading, subHeading, species, link, image } = data;
+  const { heading, subHeading, imageDescription, link, image } = data;
 
   const imageUrl = image?.url;
   const fullImageUrl = getStrapiImageUrl(imageUrl);
@@ -77,9 +77,9 @@ export function HeroSection({ data }: HeroSectionProps) {
                 unoptimized
               />
             </div>
-            {species && (
+            {imageDescription && (
               <p className="text-sm text-muted-foreground italic mt-2 text-center">
-                {species}
+                {imageDescription}
               </p>
             )}
           </div>
