@@ -32,4 +32,24 @@ export type StrapiResponse<T> = {
 export type StrapiHeroSection = HeroSectionData & {
   __component: 'layout.hero-section';
 };
+export type StrapiSingleResponse<T> = {
+  data: T;
+};
 
+export type HeaderLink = {
+  label?: string;
+  href: string;
+  isExternal?: boolean | null;
+};
+
+export type HeaderComponent = {
+  id: number;
+  title: string;
+  link1?: HeaderLink[];
+  link2?: HeaderLink[];
+};
+
+export type StrapiGlobalData = {
+  id: number;
+  header?: HeaderComponent[];
+};
