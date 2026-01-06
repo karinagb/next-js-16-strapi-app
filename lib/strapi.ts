@@ -103,3 +103,8 @@ export async function fetchStrapiSingle<T>(url: string): Promise<StrapiSingleRes
 
   return response.json();
 }
+
+export async function fetchContactPageData() {
+  'use cache';
+  return fetchStrapiData(`/api/contact-page`);
+}

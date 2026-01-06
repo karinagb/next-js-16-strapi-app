@@ -26,6 +26,8 @@ export type StrapiResponse<T> = {
     description: string;
     slogan?: string;
     sections?: T[];
+    email?: string;
+    phone?: string;
   };
 };
 
