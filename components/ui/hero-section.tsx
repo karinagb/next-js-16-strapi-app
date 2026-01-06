@@ -3,27 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { getStrapiImageUrl } from '@/lib/strapi';
-
-export type StrapiImage = {
-  id: number;
-  documentId?: string;
-  url: string;
-  alternativeText?: string;
-  width?: number;
-  height?: number;
-};
-
-export type HeroSectionData = {
-  heading: string;
-  subHeading?: string;
-  imageDescription?: string;
-  link?: {
-    label?: string;
-    href: string;
-    isExternal?: boolean;
-  };
-  image?: StrapiImage;
-};
+import type { HeroSectionData } from '@/lib/interfaces';
 
 type HeroSectionProps = {
   data: HeroSectionData;

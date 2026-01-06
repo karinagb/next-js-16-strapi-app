@@ -55,3 +55,22 @@ export type StrapiGlobalData = {
   id: number;
   header?: HeaderComponent[];
 };
+
+export type Service = {
+  title: string;
+  description?: string;
+  price?: number;
+  image?: StrapiImage;
+};
+
+export type ServicesSection = {
+  __component: 'layout.services-section';
+  services?: Service[];
+};
+
+export type ServicesPageData = {
+  id: number;
+  title: string;
+  description?: string;
+  sections?: ServicesSection[];
+};

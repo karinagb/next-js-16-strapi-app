@@ -4,6 +4,7 @@ import {
   StrapiHeroSection,
   StrapiGlobalData,
   StrapiSingleResponse,
+  ServicesPageData
 } from '@/lib/interfaces';
 
 const BASE_URL = process.env.STRAPI_BASE_URL ?? 'http://localhost:1337';
@@ -107,4 +108,35 @@ export async function fetchStrapiSingle<T>(url: string): Promise<StrapiSingleRes
 export async function fetchContactPageData() {
   'use cache';
   return fetchStrapiData(`/api/contact-page`);
+}
+
+
+
+
+export async function fetchServicesPage() {
+    'use cache';
+  const query = qs.stringify(
+    {
+      populate: {
+        sections: {
+          on: {
+            'layout.services-section': {
+              populate: {
+                services: {
+                  populate: {
+                    image: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    { encodeValuesOnly: true }
+  );
+
+  return fetchStrapiSingle<ServicesPageData>(
+    `/api/services-page?${query}`
+  );
 }
