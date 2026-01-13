@@ -1,8 +1,5 @@
 import type { NextConfig } from "next";
 
-const strapiBaseUrl = process.env.STRAPI_BASE_URL || 'http://localhost:1337';
-const strapiUrl = new URL(strapiBaseUrl);
-
 const nextConfig: NextConfig = {
   cacheComponents: true,
   images: {
@@ -11,7 +8,10 @@ const nextConfig: NextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '1337',
-        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'typical-happiness-551e5b3739.strapiapp.com',
       },
     ],
   },

@@ -7,7 +7,7 @@ import {
   ServicesPageData
 } from '@/lib/interfaces';
 
-const BASE_URL = process.env.STRAPI_BASE_URL ?? 'http://localhost:1337';
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
 export function getStrapiImageUrl(url: string | undefined): string | undefined {
   if (!url) return undefined;
@@ -16,12 +16,7 @@ export function getStrapiImageUrl(url: string | undefined): string | undefined {
     return url;
   }
 
-  const strapiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_BASE_URL ||
-    process.env.NEXT_PUBLIC_STRAPI_API_URL ||
-    'http://localhost:1337';
-
-  return `${strapiBaseUrl}${url}`;
+  return `${STRAPI_URL}${url}`;
 }
 
 const QUERY_HOME_PAGE = {
@@ -84,22 +79,20 @@ return fetchStrapiSingle<StrapiGlobalData>(`/api/global?${query}`);
 }
 
 export async function fetchStrapiData<T>(url: string): Promise<StrapiResponse<T>> {
-  const fullUrl = `${BASE_URL}${url}`;
-  const response = await fetch(fullUrl);
+  const response = await fetch(`${STRAPI_URL}${url}`);
 
   if (!response.ok) {
-    throw new Error(`Error fetching ${fullUrl}: ${response.status} ${response.statusText}`);
+    throw new Error(`Error fetching ${STRAPI_URL}${url}: ${response.status} ${response.statusText}`);
   }
 
   return response.json();
 }
 
 export async function fetchStrapiSingle<T>(url: string): Promise<StrapiSingleResponse<T>> {
-  const fullUrl = `${BASE_URL}${url}`;
-  const response = await fetch(fullUrl);
+  const response = await fetch(`${STRAPI_URL}${url}`);
 
   if (!response.ok) {
-    throw new Error(`Error fetching ${fullUrl}`);
+    throw new Error(`Error fetching ${STRAPI_URL}${url}`);
   }
 
   return response.json();
@@ -114,7 +107,7 @@ export async function fetchContactPageData() {
 
 
 export async function fetchServicesPage() {
-    'use cache';
+  'use cache';
   const query = qs.stringify(
     {
       populate: {
