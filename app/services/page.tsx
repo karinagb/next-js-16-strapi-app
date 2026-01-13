@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import type { ServicesSection } from '@/lib/interfaces';
+import type { ServicesPageData, ServicesSection } from '@/lib/interfaces';
 import { fetchServicesPage, getStrapiImageUrl } from '@/lib/strapi';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign } from 'lucide-react';
 
 export default async function ServicesPage() {
-  let page: { title?: string; description?: string; sections?: unknown[] } | null = null;
+  let page: ServicesPageData | null = null;
 
   try {
     const response = await fetchServicesPage();
