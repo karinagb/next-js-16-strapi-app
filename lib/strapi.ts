@@ -7,7 +7,7 @@ import {
   ServicesPageData
 } from '@/lib/interfaces';
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const STRAPI_URL = (process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337').replace(/\/$/, '');
 
 export function getStrapiImageUrl(url: string | undefined): string | undefined {
   if (!url) return undefined;
@@ -62,20 +62,18 @@ export async function fetchGlobalData() {
   const query = qs.stringify(
     {
       populate: {
-  header: {
-    populate: {
-      link1: true,
-      link2: true,
-    },
-  },
-}
-
+        header: {
+          populate: {
+            link1: true,
+            link2: true,
+          },
+        },
+      },
     },
     { encodeValuesOnly: true }
   );
 
-return fetchStrapiSingle<StrapiGlobalData>(`/api/global?${query}`);
-
+  return fetchStrapiSingle<StrapiGlobalData>(`/api/global?${query}`);
 }
 
 export async function fetchStrapiData<T>(url: string): Promise<StrapiResponse<T>> {
@@ -92,7 +90,7 @@ export async function fetchStrapiSingle<T>(url: string): Promise<StrapiSingleRes
   const response = await fetch(`${STRAPI_URL}${url}`);
 
   if (!response.ok) {
-    throw new Error(`Error fetching ${STRAPI_URL}${url}`);
+    throw new Error(`Error fetching ${STRAPI_URL}${url}: ${response.status} ${response.statusText}`);
   }
 
   return response.json();

@@ -5,8 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { DollarSign } from 'lucide-react';
 
 export default async function ServicesPage() {
-  const response = await fetchServicesPage();
-  const page = response.data;
+  let page: { title?: string; description?: string; sections?: unknown[] } | null = null;
+
+  try {
+    const response = await fetchServicesPage();
+    page = response.data;
+  } catch {
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950">
@@ -16,10 +21,10 @@ export default async function ServicesPage() {
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(96,165,250,0.5)]">
-                {page.title}
+                {page?.title ?? 'Services'}
               </span>
             </h1>
-            {page.description && (
+            {page?.description && (
               <p className="mt-6 text-lg leading-8 text-slate-300 sm:text-xl">
                 {page.description}
               </p>
@@ -30,7 +35,7 @@ export default async function ServicesPage() {
 
       <section className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          {page.sections?.map((section, i) => {
+          {page?.sections?.map((section, i) => {
             if (section.__component !== 'layout.services-section') return null;
 
             const servicesSection = section as ServicesSection;

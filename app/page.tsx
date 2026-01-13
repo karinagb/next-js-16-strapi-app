@@ -2,20 +2,36 @@ import { HeroSection } from '@/components/ui/hero-section';
 import { fetchHomePageData } from '@/lib/strapi';
 
 export async function generateMetadata() {
-  const strapiData = await fetchHomePageData();
-  return {
-    title: strapiData.data.title,
-    description: strapiData.data.description,
-  };
+  try {
+    const strapiData = await fetchHomePageData();
+    return {
+      title: strapiData.data.title,
+      description: strapiData.data.description,
+    };
+  } catch {
+    return {
+      title: 'Home',
+      description: '',
+    };
+  }
 };
 
 export default async function Home() {
-  const strapiData = await fetchHomePageData();
+  let title = '';
+  let description = '';
+  let slogan: string | undefined;
+  let heroSection: unknown | undefined;
 
-  const { title, description, slogan } = strapiData.data;
-  const heroSection = strapiData.data?.sections?.find(
-    (section) => section.__component === 'layout.hero-section'
-  );
+  try {
+    const strapiData = await fetchHomePageData();
+    title = strapiData.data.title ?? '';
+    description = strapiData.data.description ?? '';
+    slogan = strapiData.data.slogan;
+    heroSection = strapiData.data?.sections?.find(
+      (section) => section.__component === 'layout.hero-section'
+    );
+  } catch {
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950">
@@ -25,7 +41,7 @@ export default async function Home() {
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(96,165,250,0.5)]">
-                {title}
+                {title || 'Welcome'}
               </span>
             </h1>
             {slogan && (

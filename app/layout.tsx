@@ -9,31 +9,28 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const globalResponse = await fetchGlobalData();
+  let title = 'Website';
+  let links: HeaderLink[] = [];
 
-  if (!globalResponse?.data) {
-    throw new Error('Global data missing');
+  try {
+    const globalResponse = await fetchGlobalData();
+    const global = globalResponse?.data;
+    const header = global?.header?.[0];
+
+    if (header) {
+      title = header.title ?? title;
+      const { link1 = [], link2 = [] } = header;
+      links = [...link1, ...link2].filter(
+        (link): link is HeaderLink => typeof link?.href === 'string' && link.href.length > 0
+      );
+    }
+  } catch {
   }
-
-  const global = globalResponse.data;
-
-const header = global.header?.[0];
-
-if (!header) {
-  throw new Error('Global header component is missing');
-}
-
-const { title, link1 = [], link2 = [] } = header;
-
-const links = [...link1, ...link2].filter(
-  (link): link is HeaderLink =>
-    typeof link?.href === 'string' && link.href.length > 0
-);
 
   return (
     <html lang="en">
       <body>
-   <Header title={title} links={links} />
+        <Header title={title} links={links} />
 
         {children}
       </body>

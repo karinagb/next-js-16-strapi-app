@@ -5,8 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Mail, MessageCircle, MapPin } from 'lucide-react';
 
 export default async function ContactPage() {
-  const response = await fetchContactPageData();
-  const { title, description, email, phone } = response.data;
+  let title = 'Contact';
+  let description: string | undefined;
+  let email: string | undefined;
+  let phone: string | undefined;
+
+  try {
+    const response = await fetchContactPageData();
+    title = response.data.title ?? title;
+    description = response.data.description;
+    email = response.data.email;
+    phone = response.data.phone;
+  } catch {
+  }
 
   const whatsappNumber = phone?.replace(/[^\d]/g, '');
 
