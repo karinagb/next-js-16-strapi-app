@@ -1,6 +1,6 @@
 import { HeroSection } from '@/components/ui/hero-section';
 import { fetchHomePageData } from '@/lib/strapi';
-import type { HeroSectionData } from '@/lib/interfaces';
+import type { StrapiHeroSection } from '@/lib/interfaces';
 
 export async function generateMetadata() {
   try {
@@ -21,7 +21,7 @@ export default async function Home() {
   let title = '';
   let description = '';
   let slogan: string | undefined;
-  let heroSection: HeroSectionData | undefined;
+  let heroSection: StrapiHeroSection | undefined;
 
   try {
     const strapiData = await fetchHomePageData();
@@ -29,11 +29,7 @@ export default async function Home() {
     description = strapiData.data.description ?? '';
     slogan = strapiData.data.slogan;
     heroSection = strapiData.data?.sections?.find(
-      (section): section is HeroSectionData =>
-        typeof section === 'object' &&
-        section !== null &&
-        '__component' in section &&
-        (section as { __component?: unknown }).__component === 'layout.hero-section'
+      (section) => section.__component === 'layout.hero-section'
     );
   } catch {
   }
